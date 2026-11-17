@@ -1,0 +1,8 @@
+{
+  "accounts": [
+    { "name": "Claude Account 1", "tag": "C1", "type": "claude", "profile": "Claude" },
+    { "name": "Claude Account 2", "tag": "C2", "type": "claude", "profile": "Claude Account 2" },
+    { "name": "Codex", "tag": "CX", "type": "codex" },
+    { "name": "Antigravity", "tag": "AG", "type": "antigravity" }
+  ]
+}
