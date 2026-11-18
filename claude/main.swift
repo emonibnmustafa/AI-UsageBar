@@ -630,8 +630,8 @@ struct Panel: View {
 }
 
 final class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
-    // The menu bar account is checked every 30 s so drops show at once; the others only when the panel opens.
-    static let selectedEvery: TimeInterval = 25   // + 10 s timer tick ≈ every 30 s
+    // The menu bar account is checked about every 2 minutes (Claude rate-limits faster checks); the others only when the panel opens.
+    static let selectedEvery: TimeInterval = 115   // + 10 s timer tick ≈ every 2 minutes
     static let othersEvery: TimeInterval = 30
     private var status: NSStatusItem!
     private var popover = NSPopover()

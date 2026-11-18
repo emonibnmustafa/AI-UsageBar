@@ -16,7 +16,7 @@ Accounts come from `~/.config/ailimitbar/accounts.json` (see `../accounts.exampl
 
 ## Refresh
 
-The account in the menu bar is checked about every 30 seconds. The others are checked each time the panel opens. After an error (for example HTTP 429) an account waits 1 minute, doubling up to 30 minutes. The last reading and plan are kept across restarts. No account names or emails are shown or stored.
+The account in the menu bar is checked about every 2 minutes. The others are checked each time the panel opens. After an error (for example HTTP 429) an account waits 1 minute, doubling up to 30 minutes. The last reading and plan are kept across restarts. No account names or emails are shown or stored.
 
 ## Where the numbers come from
 

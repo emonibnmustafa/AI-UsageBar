@@ -9,7 +9,7 @@ See how much of your AI usage limits is left, for several Claude accounts, Codex
 - **Menu bar**: the account you pick, with ring gauges for the 5-hour and weekly limits, percentage left and reset time. Orange under 25%, red under 10%.
 - **Panel**: every account in its own colour, with plan, both limits and reset times. Click a card to show it in the menu bar. Drag the panel anywhere on screen.
 - **Several Claude accounts at once**: each extra account gets its own copy of the Claude app, so you never have to sign out. All Claude apps can share the same Code-tab chats and projects.
-- **Live**: the account in the menu bar refreshes about every 30 seconds; the others refresh when you open the panel.
+- **Live**: the account in the menu bar refreshes about every 2 minutes; the others refresh when you open the panel.
 
 ## Install with your AI (recommended)
 
