@@ -618,6 +618,7 @@ struct Panel: View {
         }
         .padding(14)
         .frame(width: 380)
+        .background(Color.white)   // solid white: text stays readable over any wallpaper
     }
     struct Section: View {
         let title: String
@@ -732,6 +733,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
         popover.behavior = .transient
         popover.delegate = self
         popover.animates = true
+        popover.appearance = NSAppearance(named: .aqua)   // light, to match the white panel
         popover.contentViewController = NSHostingController(rootView: Panel(model: model))
         return popover
     }
@@ -749,14 +751,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
         window.isReleasedWhenClosed = false
         window.hidesOnDeactivate = false
         window.level = .floating
-        let blur = NSVisualEffectView(frame: NSRect(origin: .zero, size: size))
-        blur.material = .popover
-        blur.state = .active
-        blur.autoresizingMask = [.width, .height]
-        hosting.frame = blur.bounds
-        hosting.autoresizingMask = [.width, .height]
-        blur.addSubview(hosting)
-        window.contentView = blur
+        window.appearance = NSAppearance(named: .aqua)
+        window.backgroundColor = .white
+        window.contentView = hosting
         detached = window
         return window
     }
