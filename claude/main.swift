@@ -441,12 +441,13 @@ enum BarArt {
 }
 
 enum Look {
-    // One colour per account: Claude 1, 2, 3, Codex, Antigravity.
+    // One colour per account, in config order (e.g. Claude 1–4, Codex, Antigravity).
     static let colors = [NSColor(srgbRed: 0.85, green: 0.47, blue: 0.34, alpha: 1),
                          NSColor(srgbRed: 0.93, green: 0.27, blue: 0.53, alpha: 1),   // rose: stands out on blue-tinted menu bars
                          NSColor(srgbRed: 0.04, green: 0.66, blue: 0.88, alpha: 1),   // sky cyan: bright on blue-tinted menu bars
+                         NSColor(srgbRed: 0.95, green: 0.65, blue: 0.12, alpha: 1),
                          NSColor(srgbRed: 0.10, green: 0.70, blue: 0.56, alpha: 1),
-                         NSColor(srgbRed: 0.95, green: 0.65, blue: 0.12, alpha: 1)]
+                         NSColor(srgbRed: 0.58, green: 0.40, blue: 0.92, alpha: 1)]
     static func nsColor(_ index: Int) -> NSColor { colors[index % colors.count] }
     static func color(_ index: Int) -> Color { Color(nsColor: nsColor(index)) }
     static func resetText(_ date: Date?, now: Date) -> String? {
