@@ -25,7 +25,6 @@ Ask:
 2. A display name for each Claude account (default "Claude Account 1", "Claude Account 2", …) and, optionally, a plan label to show (for example "Max 5x"). The plan is otherwise read from Claude.
 3. Track Codex? (yes/no)
 4. Track Antigravity (Gemini models only)? (yes/no)
-5. Should every Claude app show the same Code-tab chats and "No folder" chats? (recommended: yes)
 
 Use the defaults for anything the user leaves out.
 
@@ -37,7 +36,7 @@ For each extra Claude account `N` (2, 3, …), with app name `Claude Account N` 
 claude/accounts/make-app.sh "Claude Account N" com.local.claude.accountN "Claude Account N"
 ```
 
-This copies `/Applications/Claude.app`, gives the copy its own bundle ID and its own profile folder (`~/Library/Application Support/Claude Account N`), and makes it use the main app's no-folder chat folder. It never changes `Claude.app`. If the app already exists it only stages a new build; see "Update" below.
+This copies `/Applications/Claude.app`, gives the copy its own bundle ID and its own profile folder (`~/Library/Application Support/Claude Account N`), and makes it use the main app's chat folders, so every app shows the same chats. The main Claude app must have at least one Code-tab chat first. It never changes `Claude.app`. If the app already exists it only stages a new build; see "Update" below.
 
 ## 3. Ask the user to sign in
 
@@ -61,15 +60,9 @@ Write `~/.config/ailimitbar/accounts.json` (create the folder). Order = order in
 
 Fields: `name`, `tag`, `type` (`claude`, `codex` or `antigravity`) are required. `profile` is the Claude profile folder (`Claude` for the main app). `plan` (optional) overrides the plan label. `app` (optional) is the app path or bundle ID opened by the card's open button. Leave out Codex or Antigravity if the user does not use them. Without a config file the bar shows the main Claude account, plus Codex and Antigravity when installed.
 
-## 5. Share chats between the Claude apps (if the user said yes)
+## 5. Share chats between the Claude apps
 
-After every new app has been signed in and quit:
-
-```bash
-claude/accounts/share.sh
-```
-
-It links each extra profile's Code-tab chat folder to the main app's folder. It never touches sign-in data and is safe to re-run. Run it again after adding an account.
+Nothing to do: `make-app.sh` already makes each app save its Code-tab chats in the main app's chat folder, so a chat started in any app shows in all of them under the same project. Account apps made by an older version of this repo: rebuild them (see "Update" below), then run `claude/accounts/share.sh` with those apps quit; it moves their own chats into the shared folder.
 
 ## 6. Install and check
 

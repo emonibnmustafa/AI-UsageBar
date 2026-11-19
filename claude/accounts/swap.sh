@@ -8,7 +8,7 @@ APP="/Applications/$NAME.app"; NEW="/Applications/.$NAME.new.app"
 P="$HOME/Library/Application Support/$PROFILE"
 BK="$HOME/Library/Application Support/AccountAppBackups/$(date +%Y%m%d-%H%M%S) $NAME"
 [ -d "$NEW" ] || { echo "No staged build at $NEW; run make-app.sh first." >&2; exit 1; }
-if pgrep -f -- "--user-data-dir=$P\$" >/dev/null; then echo "Quit \"$NAME\" first (normal quit, not log out)." >&2; exit 1; fi
+if pgrep -af -- "--user-data-dir=$P\$" >/dev/null; then echo "Quit \"$NAME\" first (normal quit, not log out)." >&2; exit 1; fi
 mkdir -p "$BK"
 cp -cR "$P" "$BK/profile"
 mv "$APP" "$BK/$NAME.app"

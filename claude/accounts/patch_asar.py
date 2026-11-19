@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Make an account app use the main app's scratch-workspaces folder.
+"""Make an account app share the main app's chats.
 
 Claude shows a chat under "No folder" only when its cwd is inside
 <own profile>/scratch-workspaces. Main's no-folder chats live in
@@ -7,14 +7,26 @@ Claude shows a chat under "No folder" only when its cwd is inside
 listed them as separate folders. This patch points the copy's scratch folder
 at main's, so all apps show the same "No folder" list.
 
-Usage: patch_asar.py "/Applications/Claude Account 2.app"   (then re-sign the app)
+With a second argument, the copy also keeps its Code-tab chat records in that
+folder (the main app's claude-code-sessions/<account>/<org>). Claude 5.11+
+refuses a symlinked chat folder (O_NOFOLLOW), so share.sh's symlinks no longer work.
+
+Usage: patch_asar.py "/Applications/Claude Account 2.app" [shared chat folder]   (then re-sign the app)
 Patches Resources/app.asar, Info.plist ElectronAsarIntegrity and the integrity digest
 embedded in Electron Framework (Electron 45+). Safe to re-run.
 """
 import hashlib, json, plistlib, struct, sys
 
-OLD = b'function UX(){return(0,n.join)(u.app.getPath("userData"),Waa)}'
-NEW = b'function UX(){return(0,n.join)(u.app.getPath("home"),"Library/Application Support/Claude",Waa)}'
+SCRATCH = (b'function UX(){return(0,n.join)(u.app.getPath("userData"),Waa)}',
+           b'function UX(){return(0,n.join)(u.app.getPath("home"),"Library/Application Support/Claude",Waa)}')
+STORE_OLD = (b'getStorageDir(){return!this.currentAccountId||!this.currentOrgId?null:'
+             b'(0,Z.join)(this.userDataPath,this.baseDir,this.currentAccountId,this.currentOrgId)}')
+STORE_MARK = b'this.baseDir==="claude-code-sessions"?'
+
+
+def store_patch(folder):
+    new = STORE_OLD.replace(b'null:(0,Z.join)', b'null:' + STORE_MARK + json.dumps(folder).encode() + b':(0,Z.join)')
+    return STORE_OLD, new, STORE_MARK
 
 
 def walk(node):
@@ -25,7 +37,13 @@ def walk(node):
             yield entry
 
 
-def main(app):
+def main(app, shared=None):
+    patch(app, *SCRATCH, SCRATCH[1])
+    if shared:
+        patch(app, *store_patch(shared))
+
+
+def patch(app, OLD, NEW, done):
     asar = f"{app}/Contents/Resources/app.asar"
     raw = open(asar, "rb").read()
     _, pickle_size, _, header_len = struct.unpack("<4I", raw[:16])
@@ -38,8 +56,8 @@ def main(app):
             continue
         start = int(entry["offset"])
         content = data[start:start + entry["size"]]
-        if NEW in content:
-            print("already patched"); return
+        if done in content:
+            print("already patched:", OLD[:40].decode()); return
         if OLD in content:
             if target or content.count(OLD) != 1:
                 sys.exit("patch target not unique; app version changed, update patch_asar.py")
@@ -99,4 +117,4 @@ def update_framework_digest(app, integrity):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1])
+    main(*sys.argv[1:3])

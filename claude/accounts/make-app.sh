@@ -20,8 +20,8 @@ $PB -c "Set :CFBundleIdentifier $BUNDLE_ID" "$TMP/Contents/Info.plist"
 $PB -c "Set :CFBundleDisplayName $NAME" "$TMP/Contents/Info.plist" 2>/dev/null \
   || $PB -c "Add :CFBundleDisplayName string $NAME" "$TMP/Contents/Info.plist"
 # CFBundleName stays "Claude": Electron finds "Claude Helper.app" by it.
-# Use main's scratch-workspaces so "No folder" chats match in every app.
-python3 "$DIR/patch_asar.py" "$TMP"
+# Use main's scratch-workspaces and Code-tab chat folder so every app shows the same chats.
+python3 "$DIR/patch_asar.py" "$TMP" "$("$DIR/shared-folder.sh")"
 codesign --force --deep --sign - "$TMP" >/dev/null 2>&1
 codesign --verify --deep --strict "$TMP"
 mv "$TMP" "$FINAL"
@@ -32,4 +32,4 @@ if [ "$FINAL" != "$APP" ]; then echo "Staged $FINAL. Quit \"$NAME\", then run: s
 P="$HOME/Library/Application Support/$PROFILE"
 mkdir -p "$P"
 [ -f "$P/claude_desktop_config.json" ] || cp "$HOME/Library/Application Support/Claude/claude_desktop_config.json" "$P/"
-echo "Made $APP (profile: $P). Open it, sign in, quit it, then run share.sh."
+echo "Made $APP (profile: $P). Open it, sign in and quit it."

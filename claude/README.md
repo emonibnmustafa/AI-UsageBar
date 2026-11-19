@@ -32,8 +32,8 @@ Each extra Claude account runs in a copy of `Claude.app` with its own bundle ID 
 
 - `make-app.sh "<App Name>" <bundle id> "<Profile Folder>"` makes an account app. If the app already exists it only stages `/Applications/.<App Name>.new.app`.
 - `swap.sh "<App Name>" "<Profile Folder>"` puts a staged build in place while the app is quit, after backing up the old app and profile to `~/Library/Application Support/AccountAppBackups/`.
-- `patch_asar.py` (run by `make-app.sh`) makes the copy use the main app's `scratch-workspaces`, so "No folder" chats match in every app.
-- `share.sh` links each extra profile's Code-tab chat folder to the main app's. Run it after signing in to a new app, with that app quit.
+- `patch_asar.py` (run by `make-app.sh`) makes the copy use the main app's `scratch-workspaces` and its Code-tab chat folder (`claude-code-sessions/<account>/<org>`, found by `shared-folder.sh`), so every app lists the same project and "No folder" chats. Claude 5.11+ refuses a symlinked chat folder, so the path is patched in rather than linked.
+- `share.sh` moves chats that an account app saved in its own profile into the shared folder and removes symlinks left by older versions. It skips apps that are running.
 
 ## Build
 

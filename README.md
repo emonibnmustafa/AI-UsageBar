@@ -30,7 +30,7 @@ cd AI-UsageBar
 claude/accounts/make-app.sh "Claude Account 2" com.local.claude.account2 "Claude Account 2"
 # Open the new app, sign in, quit it. Then:
 mkdir -p ~/.config/ailimitbar && cp accounts.example.json ~/.config/ailimitbar/accounts.json   # edit to match your accounts
-claude/accounts/share.sh   # optional: same chats in every Claude app
+claude/accounts/share.sh   # only when upgrading account apps made by an older version
 ./install.sh
 ```
 
