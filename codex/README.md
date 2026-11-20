@@ -94,8 +94,8 @@ Open Terminal and run:
 
 ```bash
 # 1. Clone this repository
-git clone https://github.com/emonibnmustafa/CodexLImitBar.git
-cd CodexLImitBar
+git clone https://github.com/emonibnmustafa/AI-UsageBar.git
+cd AI-UsageBar/codex
 
 # 2. Build and install
 ./scripts/install.sh
@@ -145,7 +145,7 @@ Click the menu bar text (`5HL=... We=...`) to open the dropdown menu:
 To remove the app completely from your Mac:
 
 ```bash
-cd CodexLImitBar
+cd AI-UsageBar/codex
 ./scripts/uninstall.sh
 ```
 
